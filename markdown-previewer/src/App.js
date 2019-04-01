@@ -15,8 +15,26 @@ class App extends Component {
     this.state = {
       input: defaultText
     }
+    this.textArea= React.createRef();
     this.handleChange= this.handleChange.bind(this)
+    this.handleClick= this.handleClick.bind(this)
   }
+
+
+handleClick(el, newText) {
+  el= document.getElementById("editor")
+  newText= "B"
+  var start = el.selectionStart
+  var end = el.selectionEnd
+  var text = el.value
+  var before = text.substring(0, start)
+  var after  = text.substring(end, text.length)
+  el.value = (before + "**" + newText + "**" + after)
+  el.selectionStart =  start + 2;
+  el.selectionEnd = start + 2 + newText.length;
+  el.focus()
+
+}
 
   handleChange(e) {
     this.setState({
@@ -27,13 +45,17 @@ class App extends Component {
   render() {
     return (
       <div>
+        <ToolBar
+          onClick={this.handleClick}
+         />
         <EditorArea
-          input={this.state.input}
+          ref={this.textArea}
+          value={this.state.input}
           onChange={this.handleChange}
         />
         <PreviewArea
-          input={this.state.input}
-        />
+          value={this.state.input}/>
+
       </div>
     );
   }
@@ -41,12 +63,27 @@ class App extends Component {
 export default App;
 
 
+const ToolBar = (props) => {
+  return (
+    <React.Fragment>
+    <button
+      type="button"
+      name="button"
+      onClick={props.onClick}
+      >
+     </button>
+    </React.Fragment>
+  )
+}
+
+
 
 const EditorArea = (props) => {
   return (
       <textarea type="textarea"
+        ref={props.ref}
         onChange={props.onChange}
-        value={props.input}
+        value={props.value}
         id="editor">
       </textarea>
   )
@@ -55,10 +92,12 @@ const EditorArea = (props) => {
 
 const PreviewArea = (props) => {
   return (
-    <div id="preview" dangerouslySetInnerHTML={{__html: marked(props.input)}}>
+    <div id="preview" dangerouslySetInnerHTML={{__html: marked(props.value)}}>
     </div>
   )
 }
+
+
 
 const defaultText =
 `# Welcome to my React Markdown Previewer!
