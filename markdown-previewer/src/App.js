@@ -44,17 +44,44 @@ class App extends Component {
   }
 
 
-  handleClick(el, newText) {
+  handleClick(e,el) {
     el= document.getElementById("editor")
-    newText= "B"
-    var start = el.selectionStart
-    var end = el.selectionEnd
-    var text = el.value
-    var before = text.substring(0, start)
-    var after  = text.substring(end, text.length)
-    el.value = (before + "**" + newText + "**" + after)
-    el.selectionStart =  start + 2;
-    el.selectionEnd = start + 2 + newText.length;
+    const start = el.selectionStart
+    const end = el.selectionEnd
+    const text = el.value
+    const before = text.substring(0, start)
+    const after  = text.substring(end, text.length)
+    let newText
+
+    switch (e.target.className) {
+      case "fa fa-bold":
+      case "fa fa-italic":
+      case "fa fa-code":
+        newText= buttonStyles[e.target.className]
+        el.value = (before + buttonTypes[e.target.className] + newText + buttonTypes[e.target.className] + after)
+        el.selectionStart =  start + buttonTypes[e.target.className].length
+        el.selectionEnd = el.selectionStart + newText.length
+      break;
+
+      case "fa fa-quote-left":
+      case "fa fa-list-ol":
+      case "fa fa-list":
+        newText= buttonStyles[e.target.className];
+        el.value = (before + buttonTypes[e.target.className] + newText + after)
+        el.selectionStart =  start + buttonTypes[e.target.className].length
+        el.selectionEnd = el.selectionStart + newText.length
+      break;
+
+      case "fa fa-link":
+      case "fa fa-picture-o":
+        newText= buttonStyles[e.target.className];
+        el.value = (before + buttonTypes[e.target.className] + newText + after)
+        el.selectionStart =  start + 1 + buttonTypes[e.target.className].length
+        el.selectionEnd = el.selectionStart - 2 + newText.length
+      break;
+      default:
+
+    }
     el.focus()
   }
 
@@ -76,17 +103,7 @@ class App extends Component {
           onChange={this.handleChange}
         />
         <PreviewArea
-<<<<<<< HEAD
-<<<<<<< HEAD
-          input={this.state.input}
-        />
-=======
           value={this.state.input}/>
->>>>>>> test-2
-=======
-          value={this.state.input}/>
-
->>>>>>> d2ecef2784218e19677ef34e083b5f52170a7d6b
       </div>
     );
   }
