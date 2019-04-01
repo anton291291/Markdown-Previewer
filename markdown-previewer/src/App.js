@@ -77,11 +77,16 @@ class App extends Component {
         />
         <PreviewArea
 <<<<<<< HEAD
+<<<<<<< HEAD
           input={this.state.input}
         />
 =======
           value={this.state.input}/>
 >>>>>>> test-2
+=======
+          value={this.state.input}/>
+
+>>>>>>> d2ecef2784218e19677ef34e083b5f52170a7d6b
       </div>
     );
   }
