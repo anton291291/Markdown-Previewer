@@ -52,9 +52,10 @@ handleClick(el, newText) {
           ref={this.textArea}
           value={this.state.input}
           onChange={this.handleChange}
-          />
+        />
         <PreviewArea
           value={this.state.input}/>
+
       </div>
     );
   }
