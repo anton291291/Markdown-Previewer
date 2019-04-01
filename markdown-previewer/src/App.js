@@ -2,6 +2,29 @@ import React, { Component } from 'react';
 import './App.scss';
 import marked from 'marked';
 
+
+const buttonTypes = {
+  'fa fa-bold': '**',
+  'fa fa-italic': '_',
+  'fa fa-quote-left': '> ',
+  'fa fa-link': '[Link]',
+  'fa fa-picture-o': '![Alt Text]',
+  'fa fa-list-ol': '1. ',
+  'fa fa-list': '- ',
+  'fa fa-code': '`'
+};
+const buttonStyles = {
+  'fa fa-bold': 'Strong Text',
+  'fa fa-italic': 'Emphasized Text',
+  'fa fa-quote-left': 'Block Quote',
+  'fa fa-link': '(http://)',
+  'fa fa-picture-o': '(http://)',
+  'fa fa-list-ol': 'List Item',
+  'fa fa-list': 'List Item',
+  'fa fa-code': 'Inline Code'
+};
+
+
 marked.setOptions({
   breaks: true,
   gfm: true,
@@ -15,7 +38,24 @@ class App extends Component {
     this.state = {
       input: defaultText
     }
+    this.textArea= React.createRef();
     this.handleChange= this.handleChange.bind(this)
+    this.handleClick= this.handleClick.bind(this)
+  }
+
+
+  handleClick(el, newText) {
+    el= document.getElementById("editor")
+    newText= "B"
+    var start = el.selectionStart
+    var end = el.selectionEnd
+    var text = el.value
+    var before = text.substring(0, start)
+    var after  = text.substring(end, text.length)
+    el.value = (before + "**" + newText + "**" + after)
+    el.selectionStart =  start + 2;
+    el.selectionEnd = start + 2 + newText.length;
+    el.focus()
   }
 
   handleChange(e) {
@@ -27,13 +67,21 @@ class App extends Component {
   render() {
     return (
       <div>
+        <ToolBar
+          onClick={this.handleClick}
+         />
         <EditorArea
-          input={this.state.input}
+          ref={this.textArea}
+          value={this.state.input}
           onChange={this.handleChange}
         />
         <PreviewArea
+<<<<<<< HEAD
           input={this.state.input}
         />
+=======
+          value={this.state.input}/>
+>>>>>>> test-2
       </div>
     );
   }
@@ -41,12 +89,32 @@ class App extends Component {
 export default App;
 
 
+const ToolBar = (props) => {
+  return (
+    <div className="toolbar">
+      <div className="spacer" />
+      <i title="Bold" onClick={props.onClick} className="fa fa-bold"/>
+      <i title="Italic" onClick={props.onClick} className="fa fa-italic"/>
+      <div className="spacer" />
+      <i title="Block Quote" onClick={props.onClick} className="fa fa-quote-left"/>
+      <i title="Link" onClick={props.onClick} className="fa fa-link"/>
+      <i title="Inline Code" onClick={props.onClick} className="fa fa-code"/>
+      <i title="Image" onClick={props.onClick} className="fa fa-picture-o"/>
+      <div className="spacer" />
+      <i title="Bulleted List" onClick={props.onClick} className="fa fa-list"/>
+      <i title="Numbered List" onClick={props.onClick} className="fa fa-list-ol"/>
+    </div>
+  )
+}
+
+
 
 const EditorArea = (props) => {
   return (
       <textarea type="textarea"
+        ref={props.ref}
         onChange={props.onChange}
-        value={props.input}
+        value={props.value}
         id="editor">
       </textarea>
   )
@@ -55,10 +123,12 @@ const EditorArea = (props) => {
 
 const PreviewArea = (props) => {
   return (
-    <div id="preview" dangerouslySetInnerHTML={{__html: marked(props.input)}}>
+    <div id="preview" dangerouslySetInnerHTML={{__html: marked(props.value)}}>
     </div>
   )
 }
+
+
 
 const defaultText =
 `# Welcome to my React Markdown Previewer!
