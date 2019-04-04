@@ -26,11 +26,16 @@ const buttonStyles = {
 
 
 marked.setOptions({
-  breaks: true,
-  gfm: true,
-  tables: true,
+  breaks: true
 });
-const myMarked = new marked.Renderer();
+const renderer = new marked.Renderer();
+
+renderer.link = function (href, title, text) {
+  return `<a target="_blank" href="${href}">${text}` + '</a>';
+}
+renderer.code = function(code, language) {
+  return '<pre><code class=language-' + language + '>' + code + '</code></pre>';
+}
 
 class App extends Component {
   constructor(props) {
@@ -80,7 +85,6 @@ class App extends Component {
         el.selectionEnd = el.selectionStart - 2 + newText.length
       break;
       default:
-
     }
     el.focus()
   }
@@ -93,38 +97,43 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <ToolBar
-          onClick={this.handleClick}
-         />
-        <EditorArea
-          ref={this.textArea}
-          value={this.state.input}
-          onChange={this.handleChange}
-        />
-        <PreviewArea
-          value={this.state.input}/>
-      </div>
+      <React.Fragment>
+        <div className="editorBlock">
+          <ToolsBar
+            onClick={this.handleClick}
+           />
+          <EditorArea
+            ref={this.textArea}
+            value={this.state.input}
+            onChange={this.handleChange}
+          />
+       </div>
+          <PreviewArea
+            value={this.state.input}/>
+      </React.Fragment>
     );
   }
 }
 export default App;
 
 
-const ToolBar = (props) => {
+const ToolsBar = (props) => {
   return (
     <div className="toolbar">
-      <div className="spacer" />
-      <i title="Bold" onClick={props.onClick} className="fa fa-bold"/>
-      <i title="Italic" onClick={props.onClick} className="fa fa-italic"/>
-      <div className="spacer" />
-      <i title="Block Quote" onClick={props.onClick} className="fa fa-quote-left"/>
-      <i title="Link" onClick={props.onClick} className="fa fa-link"/>
-      <i title="Inline Code" onClick={props.onClick} className="fa fa-code"/>
-      <i title="Image" onClick={props.onClick} className="fa fa-picture-o"/>
-      <div className="spacer" />
-      <i title="Bulleted List" onClick={props.onClick} className="fa fa-list"/>
-      <i title="Numbered List" onClick={props.onClick} className="fa fa-list-ol"/>
+      <div className="spacer">
+        <i title="Bold" onClick={props.onClick} className="fa fa-bold"/>
+        <i title="Italic" onClick={props.onClick} className="fa fa-italic"/>
+      </div>
+      <div className="spacer">
+        <i title="Block Quote" onClick={props.onClick} className="fa fa-quote-left"/>
+        <i title="Link" onClick={props.onClick} className="fa fa-link"/>
+        <i title="Inline Code" onClick={props.onClick} className="fa fa-code"/>
+        <i title="Image" onClick={props.onClick} className="fa fa-picture-o"/>
+      </div>
+      <div className="spacer">
+        <i title="Bulleted List" onClick={props.onClick} className="fa fa-list"/>
+        <i title="Numbered List" onClick={props.onClick} className="fa fa-list-ol"/>
+      </div>
     </div>
   )
 }
@@ -145,7 +154,7 @@ const EditorArea = (props) => {
 
 const PreviewArea = (props) => {
   return (
-    <div id="preview" dangerouslySetInnerHTML={{__html: marked(props.value)}}>
+    <div id="preview" dangerouslySetInnerHTML={{__html: marked(props.value, { renderer: renderer })}}>
     </div>
   )
 }
@@ -158,7 +167,7 @@ const defaultText =
 ## This is a sub-heading...
 ### And here's some other cool stuff:
 
-Heres some code, \`<div></div>\`, between 2 backticks.
+Heres some code, \`<inline style>\`, between 2 backticks.
 
 \`\`\`
 // this is multi-line code:
@@ -175,14 +184,12 @@ Or _italic_.
 Or... wait for it... **_both!_**
 And feel free to go crazy ~~crossing stuff out~~.
 
-There's also [links](https://www.freecodecamp.com), and
+The coolest part is probably the toolbar, so go ahead and check that out. There are libraries out there that embed pre-coded toolbards like [SimpleMDE](https://simplemde.com/), but I decided to try to undertake the challenge myself, so this is definitely not perfect (some scrolling issues), but for the most part it works.
+
+There's also [links](https://www.freecodecamp.com/no-stack-dub-sack), and
 > Block Quotes!
 
 And if you want to get really crazy, even tables:
-
-| foo | bar |
-| --- | --- |
-| baz | bim |
 
 Wild Header | Crazy Header | Another Header?
 ------------ | ------------- | -------------
@@ -191,14 +198,19 @@ And here. | Okay. | I think we get it.
 
 - And of course there are lists.
   - Some are bulleted.
-     - With different indentation levels.
+     - With differnt indentation levels.
         - That look like this.
 
 
 1. And there are numbererd lists too.
-1. Use just 1s if you want!
+1. The tool bar keeps adding 1s.
 1. But the list goes on...
 - Even if you use dashes or asterisks.
 * And last but not least, let's not forget embedded images:
 
-![React Logo w/ Text](https://goo.gl/Umyytc)`
+![React Logo w/ Text](https://goo.gl/Umyytc)
+
+Well, that's it! Thanks for visiting my project. The code is in desperate need of a refactor, so maybe I will improve later and add additional functionality like syntax highlighting and fix some of the bugs. For this first round, I was just exploring these techniques and focusing on getting things working.
+
+Feel free to play around and leave some comments if you have any thoughts!
+`
