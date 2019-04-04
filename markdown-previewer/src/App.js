@@ -41,9 +41,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      input: defaultText
+      input: defaultText,
     }
-    this.textArea= React.createRef();
+
     this.handleChange= this.handleChange.bind(this)
     this.handleClick= this.handleClick.bind(this)
   }
@@ -98,17 +98,19 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="editorBlock">
+        <div
+          className="editorBlock animated flipInX"
+          >
           <ToolsBar
             onClick={this.handleClick}
            />
           <EditorArea
-            ref={this.textArea}
             value={this.state.input}
             onChange={this.handleChange}
           />
        </div>
           <PreviewArea
+            ref={this.preview}
             value={this.state.input}/>
       </React.Fragment>
     );
@@ -143,7 +145,6 @@ const ToolsBar = (props) => {
 const EditorArea = (props) => {
   return (
       <textarea type="textarea"
-        ref={props.ref}
         onChange={props.onChange}
         value={props.value}
         id="editor">
@@ -154,7 +155,10 @@ const EditorArea = (props) => {
 
 const PreviewArea = (props) => {
   return (
-    <div id="preview" dangerouslySetInnerHTML={{__html: marked(props.value, { renderer: renderer })}}>
+    <div
+      id="preview"
+      className= "animated fadeIn delay-1s"
+      dangerouslySetInnerHTML={{__html: marked(props.value, { renderer: renderer })}}>
     </div>
   )
 }

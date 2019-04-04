@@ -1,3 +1,7 @@
+$darkAccent: #224B4B;
+$lightAccent: #2CDA9D;
+$backgroundBase: #619E9E;
+
 body {
   background-color: rgb(215, 220, 230);
   margin: 0;
@@ -28,6 +32,8 @@ body {
   display: -ms-flex;
   display: flex;
   justify-content: space-around;
+  align-content: center;
+  height: 4vh;
 }
 
 #editor {
@@ -36,10 +42,75 @@ body {
   overflow: auto;
   margin: 0;
   border: 0;
-  width: 99.7%;
+  width: 69.7vw;
   height: 90.4%;
   border-radius: 0 0 8px 8px;
 }
+
+#preview {
+  background-color: rgb(255, 255, 255);
+  width: 80%;
+  padding: 1vh;
+}
+
+.spacer {
+  width: 6vw;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: flex;
+  justify-content: space-around;
+  align-content: center;
+}
+
+.fa {
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: flex;
+  align-self: center;
+}
+
+i {
+  color:  rgb(255, 146, 23);
+
+  &:hover {
+   transition: 0.2s;
+   transform: scale(0.7);
+  }
+}
+
+// MARKDOWN STYLES
+blockquote {
+  border-left: 3px solid #224B4B;
+  color: #224B4B;
+  padding-left: 5px;
+  margin-left: 25px;
+}
+
+code {
+  background: #224B4B;
+  color: #2CDA9D;
+  padding: 1px 4px 2px 4px;
+  font-size: 11px;
+}
+pre {
+  background: $darkAccent;
+  padding: 5px 0 5px 5px;
+  code {
+    text-shadow: 3px 2px 1px black;
+  }
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td, th {
+  border: 2px solid $darkAccent;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+//SCROLL
 ::-webkit-scrollbar-track
 {
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
@@ -49,7 +120,6 @@ body {
 
 ::-webkit-scrollbar
 {
-	width: 10px;
 	background-color: #170f17;
   border-radius: 0 0 8px 0;
 
@@ -59,10 +129,4 @@ body {
 {
 	background-color: rgb(255, 146, 23);
   border-radius: 0 0 8px 0;
-}
-
-#preview {
-  background-color: rgb(255, 255, 255);
-  width: 80%;
-  padding: 1vh;
 }
