@@ -31,7 +31,7 @@ marked.setOptions({
 const renderer = new marked.Renderer();
 
 renderer.link = function (href, title, text) {
-  return `<a target="_blank" href="${href}">${text}` + '</a>';
+  return `<a target="_blank" href="${href}">'${text}` + '</a>';
 }
 renderer.code = function(code, language) {
   return '<pre><code class=language-' + language + '>' + code + '</code></pre>';
@@ -43,14 +43,12 @@ class App extends Component {
     this.state = {
       input: defaultText,
     }
-
     this.handleChange= this.handleChange.bind(this)
     this.handleClick= this.handleClick.bind(this)
   }
 
-
-  handleClick(e,el) {
-    el= document.getElementById("editor")
+  handleClick(e) {
+    let el= document.getElementById("editor")
     const start = el.selectionStart
     const end = el.selectionEnd
     const text = el.value
@@ -140,8 +138,6 @@ const ToolsBar = (props) => {
   )
 }
 
-
-
 const EditorArea = (props) => {
   return (
       <textarea type="textarea"
@@ -152,7 +148,6 @@ const EditorArea = (props) => {
   )
 }
 
-
 const PreviewArea = (props) => {
   return (
     <div
@@ -162,8 +157,6 @@ const PreviewArea = (props) => {
     </div>
   )
 }
-
-
 
 const defaultText =
 `# Welcome to my React Markdown Previewer!
@@ -214,7 +207,5 @@ And here. | Okay. | I think we get it.
 
 ![React Logo w/ Text](https://goo.gl/Umyytc)
 
-Well, that's it! Thanks for visiting my project. The code is in desperate need of a refactor, so maybe I will improve later and add additional functionality like syntax highlighting and fix some of the bugs. For this first round, I was just exploring these techniques and focusing on getting things working.
-
-Feel free to play around and leave some comments if you have any thoughts!
+Well, that's it! Thanks for visiting my project.
 `
