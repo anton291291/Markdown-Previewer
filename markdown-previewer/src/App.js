@@ -24,7 +24,7 @@ const buttonStyles = {
   'fa fa-code': 'Inline Code'
 };
 
-
+//OPTIONS FOR MARKED LIBRARY
 marked.setOptions({
   breaks: true
 });
